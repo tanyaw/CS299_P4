@@ -3,7 +3,7 @@
 #Completed: 03/02/2018
 
 
-##Creates connection to sqlite DB
+##Creates connection to sqlite database
 # @param None
 # @return sqlite cursor
 import sqlite3
@@ -17,7 +17,7 @@ def setSQLConnection():
 ##Displays Registration Form to console
 # @param None
 # @return None
-def register(cursor):
+def register(c):
 	print("--- SNACKER REGISTRATION ---")
 	name = input("Please enter your username: ")
 	email = input("Please enter your email address: ")
@@ -25,15 +25,8 @@ def register(cursor):
 	BoD = input("Please enter your birthday day(MM/DD/YYYY): ")
 	address = input("Please enter your address: ")
 	
-	
 	#SQL COMMAND: Add info to database
-	cursor.execute("INSERT INTO member (memberID,name,email,password,berf,address) values (NULL,?,?,?,?,?)", (name, email, pin, BoD, address))
-	cursor.execute("SELECT * FROM member")
-	print("fetchall: ")
-	result = cursor.fetchall()
-	for x in result:
-		print(x)
-
+	c.execute("INSERT INTO member (memberID, name, email, password, berf, address) values (NULL,?,?,?,?,?)", (name, email, pin, BoD, address))
 	print("Thank you for registering today!\nWe're returning you to the main menu")
 
 
@@ -47,14 +40,31 @@ def menu():
 	print("2. Go shopping.")
 	print("3. Exit.\n")
 
-##Verify that userName and pin match in DB
-# @param userName and pin 
+
+##Verify that userName and pin match in database
+# @param userName, pin, cursor 
 # @return Boolean
-# def verifyPin(userName, pin):
-# 	if(userName and pin in DB):
-# 		return True
-# 	else: 
-# 		return False
+def verifyPin(userName, pin, c):
+	#SQL COMMAND: Select username from database
+	c.execute('''SELECT name FROM member WHERE name=?''', (userName,)) 
+	user = c.fetchone()
+	
+	if(user is not None):
+		#SQL COMMAND: Select password from database
+		c.execute('''SELECT password FROM member WHERE name=?''', (userName,)) 
+		pw = c.fetchone()
+		
+		#Validate username and pin
+		for i in pw:
+			if (i == pin):
+				#Is a member
+				return True
+			else:
+				#Wrong password
+				return False
+	else:
+		print("You are not a registered snacker!\n")
+		return False
 
 
 ##Main Function
@@ -67,6 +77,8 @@ def main():
 	
 	print("\n***** WECLOME TO SNACKOVERFLOW *****")                                                              	
 	print("We have an assortment of snacks to satisfy your every craving.\n")
+	
+	#Create cursor
 	cursor = setSQLConnection()
 
 	while (True): 
@@ -78,12 +90,14 @@ def main():
 		elif (userChoice == 2):
 			ERROR = 0
 			while ( ERROR< 3 ):
+				print("\n--- PLEASE LOGIN ---")
 				userName = input("Please enter your username: ")
-				pin = int(input("Please enter your pin: "))
-				# if (verifyPin(userName, pin)):
+				pin = input("Please enter your pin: ")
 
-				# else:
-				# 	ERROR += 1
+				if ( verifyPin(userName, pin, cursor) ):
+					print("You exist.")
+				else:
+					ERROR += 1
 
 			print("Sorry, you inputted the wrong pin too many times.\nWe're returning you to the main menu.\n")
 		elif (userChoice == 3):
