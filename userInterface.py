@@ -13,6 +13,25 @@ def setSQLConnection():
 	cursor = connection.cursor()
 	return cursor
 
+##Prints out items from proudct table
+# reads data base, puts desired elements into sectioned lists. 
+# @return None
+def displayProducts(cursor):
+     names=['names']
+     price=['price']
+     description=['description']
+     stock=['stock']
+     cursor.execute("SELECT * FROM product")
+     result= cursor.fetchall()
+     for r in result:
+          names.append(r[2])
+          price.append(r[1])
+          description.append(r[3])
+          stock.append(r[4])
+     for i in range(len(names)):
+          line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(str(names[i]),str(price[i]), str(description[i]),str(stock[i]))
+          print(line_new)
+
 
 ##Displays Registration Form to console
 # @param None
@@ -40,11 +59,11 @@ def mainMenu():
 	print("3. Exit.\n")
 
 
-def shoppingMenu():
+def shoppingMenu(c):
 
 	while (True):
 		print("\n--- SNACKS IN STOCK ---")
-		#Display products
+		displayProducts(c)
 
 		print("\n--- Shopping Options ---")
 		print("1. Add item to Cart.")
@@ -55,12 +74,16 @@ def shoppingMenu():
 		userShop = int(input("Please enter a shopping selection (1|2|3|4|5): "))
 
 		if (userShop == 1):
+			#SQL COMMAND: Insert item from cart
 			print ("1")
 		elif (userShop == 2):
+			#SQL COMMAND: Delete item from cart
 			print ("2")
 		elif (userShop == 3):
+			#Display items from Cart using userName
 			print ("3")
 		elif (userShop == 4):
+			#Calcualte total of all items in shoppingCart
 			print ("4")
 		elif (userShop == 5):
 			print("Thank you for your purchase(s)!\n")
@@ -160,7 +183,7 @@ def main():
 				pin = input("Please enter your pin: ")
 
 				if ( verifyPin(userName, pin, cursor) ):
-					shoppingMenu()
+					shoppingMenu(cursor)
 					break
 				else:
 					ERROR += 1
