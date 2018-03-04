@@ -9,7 +9,7 @@
 import sqlite3
 def setSQLConnection():
 	#Add Database name
-	connection = sqlite3.connect("company.db")
+	connection = sqlite3.connect("snackOverFlow.db")
 	cursor = connection.cursor()
 	return cursor
 
@@ -17,16 +17,22 @@ def setSQLConnection():
 ##Displays Registration Form to console
 # @param None
 # @return None
-def register():
+def register(cursor):
 	print("--- SNACKER REGISTRATION ---")
 	name = input("Please enter your username: ")
 	email = input("Please enter your email address: ")
-	address = input("Please enter your address: ")
-	BoD = input("Please enter your birthday day(MM/DD/YYYY): ")
-	credit = input("Please enter your credit card number: ")
 	pin = int(input("Please enter a 4-digit passcode: "))
+	BoD = input("Please enter your birthday day(MM/DD/YYYY): ")
+	address = input("Please enter your address: ")
+	
 	
 	#SQL COMMAND: Add info to database
+	cursor.execute("INSERT INTO member (memberID,name,email,password,berf,address) values (NULL,?,?,?,?,?)", (name, email, pin, BoD, address))
+	cursor.execute("SELECT * FROM member")
+	print("fetchall: ")
+	result = cursor.fetchall()
+	for x in result:
+		print(x)
 
 	print("Thank you for registering today!\nWe're returning you to the main menu")
 
@@ -61,13 +67,14 @@ def main():
 	
 	print("\n***** WECLOME TO SNACKOVERFLOW *****")                                                              	
 	print("We have an assortment of snacks to satisfy your every craving.\n")
+	cursor = setSQLConnection()
 
 	while (True): 
 		menu()
 		userChoice = int(input("Please enter a menu selection (1|2|3): "))
 
 		if (userChoice == 1):
-			register()
+			register(cursor)
 		elif (userChoice == 2):
 			ERROR = 0
 			while ( ERROR< 3 ):
