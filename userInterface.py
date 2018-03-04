@@ -57,14 +57,46 @@ def verifyPin(userName, pin, c):
 		#Validate username and pin
 		for i in pw:
 			if (i == pin):
-				#Is a member
-				return True
+				return True		#Correct password
 			else:
-				#Wrong password
-				return False
+				return False	#Wrong password
 	else:
 		print("You are not a registered snacker!\n")
 		return False
+
+
+def exitDisplay():
+	print("\n\nThis program was created by: ")
+
+	print("   _     _      _     _      _     _   ")
+	print("  (c).-.(c)    (c).-.(c)    (c).-.(c)  ")
+	print("   / ._. \      / ._. \      / ._. \   ")
+	print(" __\( Y )/__  __\( Y )/__  __\( Y )/__ ")
+	print("(_.-/'-'\-._)(_.-/'-'\-._)(_.-/'-'\-._)")
+	print("   || K ||      || I ||      || M ||   ")
+	print(" _.' `-' '._  _.' `-' '._  _.' `-' '._ ")
+	print("(.-./`-'\.-.)(.-./`-'\.-.)(.-./`-'\.-.)")
+	print(" `-'     `-'  `-'     `-'  `-'     `-' \n")
+
+	print("   _     _      _     _      _     _   ")
+	print("  (c).-.(c)    (c).-.(c)    (c).-.(c)  ")
+	print("   / ._. \      / ._. \      / ._. \   ")
+	print(" __\( Y )/__  __\( Y )/__  __\( Y )/__ ")
+	print("(_.-/'-'\-._)(_.-/'-'\-._)(_.-/'-'\-._)")
+	print("   || T ||      || A ||      || N ||   ")
+	print(" _.' `-' '._  _.' `-' '._  _.' `-' '._ ")
+	print("(.-./`-'\.-.)(.-./`-'\.-.)(.-./`-'\.-.)")
+	print(" `-'     `-'  `-'     `-'  `-'     `-' \n")
+
+	print("   _     _      _     _      _     _   ")
+	print("  (c).-.(c)    (c).-.(c)    (c).-.(c)  ")
+	print("   / ._. \      / ._. \      / ._. \   ")
+	print(" __\( Y )/__  __\( Y )/__  __\( Y )/__ ")
+	print("(_.-/'-'\-._)(_.-/'-'\-._)(_.-/'-'\-._)")
+	print("   || D ||      || E ||      || R ||   ")
+	print(" _.' `-' '._  _.' `-' '._  _.' `-' '._ ")
+	print("(.-./`-'\.-.)(.-./`-'\.-.)(.-./`-'\.-.)")
+	print(" `-'     `-'  `-'     `-'  `-'     `-' ")
 
 
 ##Main Function
@@ -87,6 +119,7 @@ def main():
 
 		if (userChoice == 1):
 			register(cursor)
+
 		elif (userChoice == 2):
 			ERROR = 0
 			while ( ERROR< 3 ):
@@ -95,16 +128,22 @@ def main():
 				pin = input("Please enter your pin: ")
 
 				if ( verifyPin(userName, pin, cursor) ):
-					print("You exist.")
+					print("You exist.\n")
+					break
 				else:
 					ERROR += 1
 
-			print("Sorry, you inputted the wrong pin too many times.\nWe're returning you to the main menu.\n")
+			if(ERROR == 3):
+				print("Sorry, you inputted the wrong pin too many times.\nWe're returning you to the main menu.\n")
+
 		elif (userChoice == 3):
 			print("Thank you for snacking with us today.\nWe look forward to seeing you again!\n")
+			exitDisplay()
 			exit(0)
+
 		else:
 			print("ERROR: This is an invalid choice, please try again.\n")
+
 
 #Calls main function
 main()
