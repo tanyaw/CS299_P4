@@ -18,10 +18,10 @@ def setSQLConnection():
 # reads data base, puts desired elements into sectioned lists. 
 # @return None
 def displayProducts(c):
-    names=['names']
-    price=['price']
-    description=['description']
-    stock=['stock']
+    names=['NAMES']
+    price=['PRICES']
+    description=['DESCRIPTION']
+    stock=['STOCK']
     c.execute("SELECT * FROM product")
     result= c.fetchall()
     for r in result:
