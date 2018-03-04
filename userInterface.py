@@ -13,24 +13,26 @@ def setSQLConnection():
 	cursor = connection.cursor()
 	return cursor
 
+
 ##Prints out items from proudct table
 # reads data base, puts desired elements into sectioned lists. 
 # @return None
-def displayProducts(cursor):
-     names=['names']
-     price=['price']
-     description=['description']
-     stock=['stock']
-     cursor.execute("SELECT * FROM product")
-     result= cursor.fetchall()
-     for r in result:
-          names.append(r[2])
-          price.append(r[1])
-          description.append(r[3])
-          stock.append(r[4])
-     for i in range(len(names)):
-          line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(str(names[i]),str(price[i]), str(description[i]),str(stock[i]))
-          print(line_new)
+def displayProducts(c):
+    names=['names']
+    price=['price']
+    description=['description']
+    stock=['stock']
+    c.execute("SELECT * FROM product")
+    result= c.fetchall()
+    for r in result:
+        names.append(r[2])
+        price.append(r[1])
+        description.append(r[3])
+        stock.append(r[4])
+    
+    for i in range(len(names)):
+        line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(str(names[i]),str(price[i]), str(description[i]),str(stock[i]))
+        print(line_new)
 
 
 ##Displays Registration Form to console
@@ -60,7 +62,6 @@ def mainMenu():
 
 
 def shoppingMenu(c):
-
 	while (True):
 		print("\n--- SNACKS IN STOCK ---")
 		displayProducts(c)
@@ -202,4 +203,5 @@ def main():
 
 #Calls main function
 main()
+
 
