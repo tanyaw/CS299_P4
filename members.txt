@@ -1,0 +1,6 @@
+Tanbear, tanya@cpp.edu, 7/31/96, 123 Rocky Road,
+Derbear, derekyee@cpp.edu, 5/30/97, 300 Rainbow Road,
+Kimbear, kim@cpp.edu, 01/03/97, 850 Sunset Blvd,
+Roobear, roob@cpp.edu, 6/18/97, 250 Milky Way Drive,
+Cabear, casey@cpp.edu, 4/04/97, 3 Melrose Ave,
+Yabear, yang@cpp.edu, 8/09/97, 40 Pine Glen Road,
