@@ -33,12 +33,41 @@ def register(c):
 ##Displays Menu Options to console
 # @param None
 # @return None
-def menu():
-	print("How may we help you today?")
-	print("--- MENU OPTIONS ---")
+def mainMenu():
+	print("\n--- MENU OPTIONS ---")
 	print("1. Register as new snacker.")
 	print("2. Go shopping.")
 	print("3. Exit.\n")
+
+
+def shoppingMenu():
+
+	while (True):
+		print("\n--- SNACKS IN STOCK ---")
+		#Display products
+
+		print("\n--- Shopping Options ---")
+		print("1. Add item to Cart.")
+		print("2. Remove item from Cart.")
+		print("3. View Cart items.")
+		print("4. Go to checkout.")
+		print("5. Exit shopping.")
+		userShop = int(input("Please enter a shopping selection (1|2|3|4|5): "))
+
+		if (userShop == 1):
+			print ("1")
+		elif (userShop == 2):
+			print ("2")
+		elif (userShop == 3):
+			print ("3")
+		elif (userShop == 4):
+			print ("4")
+		elif (userShop == 5):
+			print("Thank you for your purchase(s)!\n")
+			return
+		else:
+			print("ERROR: This is an invalid choice, please try again.\n")
+
 
 
 ##Verify that userName and pin match in database
@@ -65,6 +94,9 @@ def verifyPin(userName, pin, c):
 		return False
 
 
+##Displays exit prompt to console
+# @param None
+# @return None
 def exitDisplay():
 	print("\n\nThis program was created by: ")
 
@@ -114,7 +146,7 @@ def main():
 	cursor = setSQLConnection()
 
 	while (True): 
-		menu()
+		mainMenu()
 		userChoice = int(input("Please enter a menu selection (1|2|3): "))
 
 		if (userChoice == 1):
@@ -128,7 +160,7 @@ def main():
 				pin = input("Please enter your pin: ")
 
 				if ( verifyPin(userName, pin, cursor) ):
-					print("You exist.\n")
+					shoppingMenu()
 					break
 				else:
 					ERROR += 1
