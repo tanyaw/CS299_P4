@@ -35,7 +35,7 @@ email VARCHAR(30),
 password PIN, 
 berf DOB,
 address VARCHAR(40));"""
-cursor.execute(sql_command)    #end 
+cursor.execute(sql_command)    #end
 #######################################################################       end creating tables 
 
 
@@ -51,7 +51,7 @@ cursor.execute(sql_command)    #end
 
 ######################################################################### end inserting data 
 
-
+''
 sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
         VALUES (NULL, 5.32, "egg", "nice and yokey",30);"""
 cursor.execute(sql_command)
@@ -66,21 +66,20 @@ cursor.execute(sql_command)
 
 
 sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
-            VALUES (0,"Tanya","tanya@cpp.edu", 0000, "01/02/03",111);"""
+            VALUES (NULL,"Tanya","tanya@cpp.edu", 0000, "01/02/03",111);"""
 cursor.execute(sql_command) 
 
 sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
-            VALUES (1,"Tanya2","tanya1@cpp.edu", 0001, "02/02/03",113);"""
+            VALUES (NULL,"Tanya2","tanya1@cpp.edu", 0001, "02/02/03",113);"""
 cursor.execute(sql_command)
 sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
-            VALUES (2,"Tanya3","tanya13@cpp.edu", 0002, "03/02/03",114);"""
+            VALUES (NULL,"Tanya3","tanya13@cpp.edu", 0002, "03/02/03",114);"""
 cursor.execute(sql_command)
-
 
 connection.commit()           #do this to save changes
 
 #GETTING DATA FROM TABLE SPECIFIED 
-cursor.execute("SELECT * FROM product")
+cursor.execute("SELECT * FROM member")
 print("fetchall: ")
 result= cursor.fetchall()
 for x in result:
