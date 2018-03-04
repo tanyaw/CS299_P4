@@ -1,7 +1,7 @@
-#Authors: Kim Krishnan, Tanya Wanwatanakool, and Derek Yee
+#Authors: Kim Krishnan, Tanya Wanwatanakool, Derek Yee
 #Assignment: Group Project #1
-#Completed: 03/02/2018
-
+#Topic: Using SQLite3 and Python to simulate online store
+#=========================================================
 
 ##Creates connection to sqlite database
 # @param None
