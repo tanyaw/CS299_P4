@@ -51,20 +51,28 @@ cursor.execute(sql_command)    #end
 
 ######################################################################### end inserting data 
 
+<<<<<<< HEAD
 ''
 sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
         VALUES (NULL, 5.32, "egg", "nice and yokey",30);"""
 cursor.execute(sql_command)
+=======
 
-sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
-        VALUES (NULL, 5.32, "bacon", "bacony",30);"""
-cursor.execute(sql_command)
+# sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
+#         VALUES (NULL, 5.32, "egg", "nice and yokey",30);"""
+# cursor.execute(sql_command)
+>>>>>>> 3a9b4b435c02a77e1e135f3e8902703d602428de
 
-sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
-        VALUES (NULL, 5.32, "cheese", "cheesey",30);"""
-cursor.execute(sql_command)
+# sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
+#         VALUES (NULL, 5.32, "bacon", "bacony",30);"""
+# cursor.execute(sql_command)
+
+# sql_command="""INSERT INTO product (bar_code, price, name, description, stock)
+#         VALUES (NULL, 5.32, "cheese", "cheesey",30);"""
+# cursor.execute(sql_command)
 
 
+<<<<<<< HEAD
 sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
             VALUES (NULL,"Tanya","tanya@cpp.edu", 0000, "01/02/03",111);"""
 cursor.execute(sql_command) 
@@ -84,6 +92,28 @@ print("fetchall: ")
 result= cursor.fetchall()
 for x in result:
     print(x)
+=======
+# sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
+#             VALUES (0,"Tanya","tanya@cpp.edu", 0000, "01/02/03",111);"""
+# cursor.execute(sql_command) 
+
+# sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
+#             VALUES (1,"Tanya2","tanya1@cpp.edu", 0001, "02/02/03",113);"""
+# cursor.execute(sql_command)
+# sql_command="""INSERT INTO member (memberID,name,email,password,berf,address)
+#             VALUES (2,"Tanya3","tanya13@cpp.edu", 0002, "03/02/03",114);"""
+# cursor.execute(sql_command)
+
+
+# connection.commit()           #do this to save changes
+
+# #GETTING DATA FROM TABLE SPECIFIED 
+# cursor.execute("SELECT * FROM product")
+# print("fetchall: ")
+# result= cursor.fetchall()
+# for x in result:
+#     print(x)
+>>>>>>> 3a9b4b435c02a77e1e135f3e8902703d602428de
 
 
 connection.close()
