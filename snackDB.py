@@ -6,9 +6,9 @@
 import sqlite3
 connection=sqlite3.connect("snackOverFlow.db")   #Name of file where data is stored/Name of db
 cursor=connection.cursor()
-#cursor.execute("""DROP TABLE product""")        #for each table
-#cursor.execute("""DROP TABLE cart""")
-#cursor.execute("""DROP TABLE member""")
+cursor.execute("""DROP TABLE product""")        #for each table
+cursor.execute("""DROP TABLE cart""")
+cursor.execute("""DROP TABLE member""")
 
 ################################################################################     Start creating tables 
 #Create tables in db
