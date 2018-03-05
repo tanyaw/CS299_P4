@@ -27,9 +27,9 @@ cursor.execute(sql_command)   #tells sql to create table
 sql_command="""                
 CREATE TABLE cart  (               
 cartID INTEGER PRIMARY KEY ,  
-memberID CUSTOMER ,
-items PRODUCTNAME
-amountItem QUANTITYBOUGHT);"""#end 
+itemName VARCHAR(20),
+amountItem QUANTITYBOUGHT,
+pricePerUnit PRICE);"""#end 
 cursor.execute(sql_command) 
 
 #Table for member

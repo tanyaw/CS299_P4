@@ -33,13 +33,89 @@ def displayProducts(c):
     for i in range(len(names)):
         line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(str(names[i]),str(price[i]), str(description[i]),str(stock[i]))
         print(line_new)
-
+'''
     c.execute("SELECT * FROM member")
-    result=c.fetchall()
-    for r in result:
-            print(r) 
+    result =c.fetchall()
+    print(result)
+'''
+##Prints out items from cart table
+# reads data base, puts desired elements into sectioned lists. 
+# @return None
+def displayCart(c):
+        items=['ITEMS']  #items 
+        amount=['AMOUNT'] #amountItem
+        c.execute("SELECT * FROM cart")
+        result=c.fetchall()
+        for r in result:
+                items.append(r[1])
+                amount.append(r[2])
+        for i in range(len(items)):
+                line_new = '{:<20}  {:<20}\n'.format(str(items[i]),str(amount[i]))
+                print(line_new)
+          
+
+##ADDS TO CART given user input
+#will use sql method to put desired data into table
+#@return none 
+def addToCart(name, amount, pricePer, c):
+        c.execute("INSERT INTO cart (cartID, itemName, amountItem, pricePerUnit) values (NULL,?,?,?)",(name, amount, pricePer))#add info to database table "cart"
+        print("added: ",name, "in the quanity of: ",str(amount), " at the price per unit of: ", str(pricePer))
 
 
+
+##checks if product name user entered is in database, will return the price. Returns -1 if not in database 
+def checkInProd(item,c):
+        try:
+                c.execute('''SELECT price FROM product WHERE name=?''',(item,))       #statement to access the item name the user entered
+                retrieved=c.fetchall() #retrieves line if it is there
+                if(retrieved is not None):
+                        retrieved=float(list(retrieved[0])[0]) #retrieved returned as a list of tuples, so converting tuple down to element to cast to float
+                        return retrieved
+                
+        except:
+                return -1
+
+
+#checks if product in cart based on user input
+def deleteInCart(item,c):
+        try:
+                c.execute('''DELETE FROM cart WHERE itemName=?''',(item,))
+                print("Deleted ",item," from your cart.")
+        except:
+                print("Selected item is not in the cart.")
+
+
+##calculats sum of all items in cart, and prints receipt 
+def calcSumOfCart(c):
+        itemNames=[]
+        itemAmount=[]
+        itemPrice=[]
+        subTotal=[]
+        totalPrice=0
+        c.execute("SELECT  * FROM cart")
+        result=c.fetchall()
+        for x in result:                        #storing info into lists to use to calculate price total
+                itemNames.append(x[1])
+                itemAmount.append(x[2])
+                itemPrice.append(x[3])
+        print(itemNames)
+        print(itemAmount)
+        print(itemPrice)
+        for i in range(len(itemNames)):           #looping through list and calculating price, summing them up all together 
+                totalPrice=totalPrice+(int(itemAmount[i])*float(itemPrice[i]))
+                subTotal.append(round((int(itemAmount[i])*float(itemPrice[i])),2))   #calculating item price *amount purchased to get subtotal of that item, adds to list 
+        print(subTotal)
+        print("SNACKOVERFLOW RECEIPT: \n")
+        line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(" ITEM "," AMOUNT "," PRICE/UNIT "," SUBTOTAL ")
+        print(line_new)
+        for x in range(len(itemNames)):
+                line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(str(itemNames[x]),str(itemAmount[x]), str(itemPrice[x]),str(subTotal[x]))
+                print(line_new)
+        totalPrice=round(totalPrice,2)
+        print("THE TOTAL TO BE PAID: $",totalPrice)
+        
+
+        
 ##Displays Registration Form to console
 # @param None
 # @return None
@@ -54,9 +130,8 @@ def register(c):
         #SQL COMMAND: Add info to database
         c.execute("INSERT INTO member (memberID, name, email, password, berf, address) values (NULL,?,?,?,?,?)", (name, email, pin, BoD, address))
         print("Thank you for registering today!\nWe're returning you to the main menu")
-
-
-##Displays Menu Options to console
+        
+#Displays Menu Options to console
 # @param None
 # @return None
 def mainMenu():
@@ -67,6 +142,7 @@ def mainMenu():
 
 
 def shoppingMenu(c):
+        c.execute(''' DELETE FROM cart''')  #clears cart table for new user 
         while (True):
                 print("\n--- SNACKS IN STOCK ---")
                 displayProducts(c)
@@ -81,16 +157,24 @@ def shoppingMenu(c):
 
                 if (userShop == 1):
                         #SQL COMMAND: Insert item from cart
-                        print ("1")
+                        item=input("Please enter the name of the product you would like to add: ")
+                        priceOfItem=checkInProd(item, c)       #gets price of item from database, it will be -1 if not in db
+                        if(priceOfItem==-1):
+                                print("We do not carry this item. Returning back to shopping menu.")
+                        else:
+                                amount=int(input("Please enter the amount you would like to get: "))
+                                addToCart(item,amount,priceOfItem,c)
                 elif (userShop == 2):
                         #SQL COMMAND: Delete item from cart
-                        print ("2")
+                        itemName=input("Please enter the item name in your cart that you would like to delete: ")
+                        deleteInCart(itemName,c)
                 elif (userShop == 3):
-                        #Display items from Cart using userName
-                        print ("3")
+                          print("\ncart contains: ")
+                          displayCart(c)
                 elif (userShop == 4):
                         #Calcualte total of all items in shoppingCart
-                        print ("4")
+                        calcSumOfCart(c)
+                        
                 elif (userShop == 5):
                         print("Thank you for your purchase(s)!\n")
                         return
@@ -158,7 +242,15 @@ def exitDisplay():
         print(" _.' `-' '._  _.' `-' '._  _.' `-' '._ ")
         print("(.-./`-'\.-.)(.-./`-'\.-.)(.-./`-'\.-.)")
         print(" `-'     `-'  `-'     `-'  `-'     `-' ")
-
+#@method: isInt
+#@param: a string
+#description: tests to see if string is integer, return False if isnt 
+def isInt(x):
+        try:
+                int(x)
+                return True
+        except:
+                return False 
 
 ##Main Function
 def main():
@@ -176,11 +268,14 @@ def main():
 
         while (True): 
                 mainMenu()
-                userChoice = int(input("Please enter a menu selection (1|2|3): "))
-
+                userChoice =(input("Please enter a menu selection (1|2|3): "))
+                if(isInt(userChoice)):
+                        userChoice=int(userChoice)
+                elif(not isInt(userChoice)):
+                        print("ERROR: Invalid choice, please try again.\n")
+                        continue
                 if (userChoice == 1):
                         register(cursor)
-
                 elif (userChoice == 2):
                         ERROR = 0
                         while ( ERROR< 3 ):
