@@ -2,7 +2,6 @@
 #Assignment: Group Project #1
 #Topic: Using SQLite3 and Python to simulate online store
 #=========================================================
-
 ##Creates connection to sqlite database
 # @param None
 # @return sqlite cursor
@@ -59,7 +58,7 @@ def displayCart(c):
 #@return none 
 def addToCart(name, amount, pricePer, c):
         c.execute("INSERT INTO cart (cartID, itemName, amountItem, pricePerUnit) values (NULL,?,?,?)",(name, amount, pricePer))#add info to database table "cart"
-        print("added: ",name, "in the quanity of: ",str(amount), " at the price per unit of: ", str(pricePer))
+        print("added: ",name, "in the quanity of: ",str(amount), " at the price per unit of: ", str(pricePer)) #printing confirmation
 
 
 
@@ -72,22 +71,38 @@ def checkInProd(item,c):
                         retrieved=float(list(retrieved[0])[0]) #retrieved returned as a list of tuples, so converting tuple down to element to cast to float
                         return retrieved
                 
-        except:
+        except:      #if not found, returns dummy value that will be caught 
                 return -1
+
+##
+def updateStock(c, numToTake, itemName):
+       
+                c.execute('''SELECT stock from product WHERE name=?''',(itemName,))
+                retrieved=c.fetchall()
+                if(retrieved is not None):
+                        retrieved=int(list(retrieved[0])[0])
+                if(numToTake<=retrieved):
+                        remaining=retrieved-numToTake
+                        c.execute(''' UPDATE product SET stock =? WHERE name=?''',(remaining,itemName))
+                        return True                 #return True means successfully updated 
+                else:
+                        return False
+                
+
 
 
 #checks if product in cart based on user input
 def deleteInCart(item,c):
         try:
-                c.execute('''DELETE FROM cart WHERE itemName=?''',(item,))
-                print("Deleted ",item," from your cart.")
+                c.execute('''DELETE FROM cart WHERE itemName=?''',(item,)) #sql statement to delete 
+                print("Deleted ",item," from your cart.") #printing confirmation
         except:
                 print("Selected item is not in the cart.")
 
 
 ##calculats sum of all items in cart, and prints receipt 
 def calcSumOfCart(c):
-        itemNames=[]
+        itemNames=[]           #creating lists to store from table to print 
         itemAmount=[]
         itemPrice=[]
         subTotal=[]
@@ -106,7 +121,7 @@ def calcSumOfCart(c):
                 subTotal.append(round((int(itemAmount[i])*float(itemPrice[i])),2))   #calculating item price *amount purchased to get subtotal of that item, adds to list 
         print(subTotal)
         print("SNACKOVERFLOW RECEIPT: \n")
-        line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(" ITEM "," AMOUNT "," PRICE/UNIT "," SUBTOTAL ")
+        line_new = '{:<20}  {:<18}  {:<18}  {:<18}'.format(" ITEM "," AMOUNT "," PRICE/UNIT "," SUBTOTAL ")
         print(line_new)
         for x in range(len(itemNames)):
                 line_new = '{:<20}  {:<20}  {:<20}  {:<20}'.format(str(itemNames[x]),str(itemAmount[x]), str(itemPrice[x]),str(subTotal[x]))
@@ -163,7 +178,10 @@ def shoppingMenu(c):
                                 print("We do not carry this item. Returning back to shopping menu.")
                         else:
                                 amount=int(input("Please enter the amount you would like to get: "))
-                                addToCart(item,amount,priceOfItem,c)
+                                if(not updateStock(c,amount,item)):
+                                        print("We do not have enought stock.")
+                                else:
+                                        addToCart(item,amount,priceOfItem,c)
                 elif (userShop == 2):
                         #SQL COMMAND: Delete item from cart
                         itemName=input("Please enter the item name in your cart that you would like to delete: ")
