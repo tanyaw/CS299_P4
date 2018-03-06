@@ -179,7 +179,7 @@ def shoppingMenu(c):
                         else:
                                 amount=int(input("Please enter the amount you would like to get: "))
                                 if(not updateStock(c,amount,item)):
-                                        print("We do not have enought stock.")
+                                        print("We do not have enough in stock.")
                                 else:
                                         addToCart(item,amount,priceOfItem,c)
                 elif (userShop == 2):
